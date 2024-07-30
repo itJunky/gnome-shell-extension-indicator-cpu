@@ -52,15 +52,10 @@ class Indicator():
 
 
     def change_sun(self, source):
-        print(CURRPATH)
-        print(dir(self.indicator))
         self.indicator.set_icon_full(CURRPATH+"/summer-rain-svgrepo-com.svg", '123')
 
     def change_rain(self, source):
-        print(dir(self.indicator))
-        #menu = gtk.Menu()
         self.indicator.set_icon_full(CURRPATH+"/cloud-svgrepo-com.svg", '321')
-        #menu.show_all()
 
     def check_cpu_load(self):
         cpu_load = psutil.cpu_percent()
@@ -74,17 +69,17 @@ class Indicator():
         if 40 > cpu_load > 30:
             self.indicator.set_icon_full(CURRPATH+"/40_prcnt.svg", 'CPU: 40%')
         if 50 > cpu_load > 40:
-            self.indicator.set_icon_full(CURRPATH+"/50_prcnt.svg", 'CPU: 40%')
+            self.indicator.set_icon_full(CURRPATH+"/50_prcnt.svg", 'CPU: 50%')
         if 60 > cpu_load > 50:
-            self.indicator.set_icon_full(CURRPATH+"/60_prcnt.svg", 'CPU: 40%')
+            self.indicator.set_icon_full(CURRPATH+"/60_prcnt.svg", 'CPU: 60%')
         if 70 > cpu_load > 60:
-            self.indicator.set_icon_full(CURRPATH+"/70_prcnt.svg", 'CPU: 40%')
+            self.indicator.set_icon_full(CURRPATH+"/70_prcnt.svg", 'CPU: 70%')
         if 80 > cpu_load > 70:
-            self.indicator.set_icon_full(CURRPATH+"/80_prcnt.svg", 'CPU: 40%')
+            self.indicator.set_icon_full(CURRPATH+"/80_prcnt.svg", 'CPU: 80%')
         if 90 > cpu_load > 80:
-            self.indicator.set_icon_full(CURRPATH+"/90_prcnt.svg", 'CPU: 40%')
+            self.indicator.set_icon_full(CURRPATH+"/90_prcnt.svg", 'CPU: 90%')
         if 100 > cpu_load > 90:
-            self.indicator.set_icon_full(CURRPATH+"/100_prcnt.svg", 'CPU: 40%')
+            self.indicator.set_icon_full(CURRPATH+"/100_prcnt.svg", 'CPU: 100%')
         menu = gtk.Menu()
         menu.show_all()
 
