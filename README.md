@@ -17,6 +17,8 @@ This README would normally document whatever steps are necessary to get your app
 * How to run tests
 * Deployment instructions
 
+```sudo apt install gir1.2-appindicator3-0.1```
+
 ### Contribution guidelines ###
 
 * Writing tests
