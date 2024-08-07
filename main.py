@@ -1,5 +1,6 @@
 import os
 import psutil
+import argparse
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
@@ -14,52 +15,54 @@ CURRPATH = os.path.dirname(__file__)
 
 refresh_time = 500
 
-print(f'file: {__file__}')
-print(f'relpath: {os.path.relpath(__file__)}')
-print(f'dirname: {os.path.dirname(__file__)}')
+parser = argparse.ArgumentParser(description='Indicate CPU load in panel.')
+parser.add_argument('-d', '--daemon', action='store_true')
+
+args = parser.parse_args()
+
+if not args.daemon:
+    print(f'file: {__file__}')
+    print(f'relpath: {os.path.relpath(__file__)}')
+    print(f'dirname: {os.path.dirname(__file__)}')
 
 
 class Indicator():
     def __init__(self):
         self.indicator = appindicator.Indicator.new(
                         APPINDICATOR_ID, 
-                        CURRPATH+"/summer-rain-svgrepo-com.svg",
+                        CURRPATH+"/10_prcnt.svg",
                         appindicator.IndicatorCategory.SYSTEM_SERVICES
         )
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
         notify.init(APPINDICATOR_ID)
         self.timeout_id = GLib.timeout_add(50, self.on_timeout, None)
-        print(f'end of init: {self.indicator.get_icon()}')
+        if not args.daemon:
+            print(f'end of init: {self.indicator.get_icon()}')
 
 
     def build_menu(self):
         menu = gtk.Menu()
-        item_color = gtk.MenuItem(label='Sun')
-        item_color.connect('activate', self.change_sun)
+       # item_color = gtk.MenuItem(label='Sun')
+       # itemcolor.connect('activate', self.change_sun)
 
-        item_color2 = gtk.MenuItem(label='Gray')
-        item_color2.connect('activate', self.change_rain)
+        #item_color2 = gtk.MenuItem(label='Gray')
+        #item_color2.connect('activate', self.change_rain)
 
         item_quit = gtk.MenuItem(label='Exit')
         item_quit.connect('activate', self.quit)
 
-        menu.append(item_color)
-        menu.append(item_color2)
+        #menu.append(item_color)
+        #menu.append(item_color2)
         menu.append(item_quit)
         menu.show_all()
         return menu
 
 
-    def change_sun(self, source):
-        self.indicator.set_icon_full(CURRPATH+"/summer-rain-svgrepo-com.svg", '123')
-
-    def change_rain(self, source):
-        self.indicator.set_icon_full(CURRPATH+"/cloud-svgrepo-com.svg", '321')
-
     def check_cpu_load(self):
         cpu_load = psutil.cpu_percent()
-        print(cpu_load)
+        if not args.daemon:
+            print(cpu_load)
         if cpu_load < 10:
             self.indicator.set_icon_full(CURRPATH+"/10_prcnt.svg", 'CPU: 10%')
         if 20 > cpu_load > 10:
@@ -87,7 +90,8 @@ class Indicator():
         gtk.main_quit()
 
     def on_timeout(self, data):
-        print('InnerLoop')
+        if not args.daemon:
+            print('InnerLoop')
         self.check_cpu_load()
         self.timeout_id = GLib.timeout_add(refresh_time, self.on_timeout, None)
 
@@ -99,7 +103,8 @@ def main():
     ind = Indicator()
     gtk.main()
     ind.main_loop()
-    print('gtk main ended')
+    if not args.daemon:
+        print('gtk main ended')
 
 if __name__ == "__main__":
     main()
